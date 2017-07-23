@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jayantxie.dao.FriendDao" >
+  <resultMap id="BaseResultMap" type="com.jayantxie.model.Friend" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="friend_name" property="friendName" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_name, friend_name, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from friend
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from friend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jayantxie.model.Friend" >
+    insert into friend (id, user_name, friend_name, 
+      state)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{friendName,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER})
+  </insert>
+
+  <select id="selectAddedFriendByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from friend
+    where (user_name = #{name,jdbcType=VARCHAR} or friend_name = #{name,jdbcType=VARCHAR})
+    and state = '2'
+  </select>
+
+  <select id="selectAddingFriendByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from friend
+    where friend_name = #{name,jdbcType=VARCHAR} and state = '1'
+    order by id desc
+  </select>
+
+  <select id="selectByFriendObject" resultMap="BaseResultMap" parameterType="com.jayantxie.model.Friend">
+    select
+    <include refid="Base_Column_List" />
+    from friend
+    where (user_name = #{userName,jdbcType=VARCHAR} AND friend_name = #{friendName,jdbcType=VARCHAR})
+    OR (user_name = #{friendName,jdbcType=VARCHAR} AND friend_name = #{userName,jdbcType=VARCHAR})
+  </select>
+
+  <insert id="insertSelective" parameterType="com.jayantxie.model.Friend" >
+    insert into friend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="friendName != null" >
+        friend_name,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="friendName != null" >
+        #{friendName,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jayantxie.model.Friend" >
+    update friend
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="friendName != null" >
+        friend_name = #{friendName,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jayantxie.model.Friend" >
+    update friend
+    set user_name = #{userName,jdbcType=VARCHAR},
+      friend_name = #{friendName,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

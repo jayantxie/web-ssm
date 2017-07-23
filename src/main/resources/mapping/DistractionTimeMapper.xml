@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jayantxie.dao.DistractionTimeDao" >
+  <resultMap id="BaseResultMap" type="com.jayantxie.model.DistractionTime" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="eva_id" property="evaId" jdbcType="INTEGER" />
+    <result column="s_time" property="sTime" jdbcType="TIMESTAMP" />
+    <result column="e_time" property="eTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, eva_id, s_time, e_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from distractiontime
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from distractiontime
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <select id="selectListByEvaId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from distractiontime
+    where eva_id = #{evaId,jdbcType=INTEGER}
+    order by s_time desc
+  </select>
+  <insert id="insert" parameterType="com.jayantxie.model.DistractionTime" >
+    insert into distractiontime (id, eva_id, s_time, 
+      e_time)
+    values (#{id,jdbcType=INTEGER}, #{evaId,jdbcType=INTEGER}, #{sTime,jdbcType=TIMESTAMP}, 
+      #{eTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jayantxie.model.DistractionTime" >
+    insert into distractiontime
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="evaId != null" >
+        eva_id,
+      </if>
+      <if test="sTime != null" >
+        s_time,
+      </if>
+      <if test="eTime != null" >
+        e_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="evaId != null" >
+        #{evaId,jdbcType=INTEGER},
+      </if>
+      <if test="sTime != null" >
+        #{sTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eTime != null" >
+        #{eTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jayantxie.model.DistractionTime" >
+    update distractiontime
+    <set >
+      <if test="evaId != null" >
+        eva_id = #{evaId,jdbcType=INTEGER},
+      </if>
+      <if test="sTime != null" >
+        s_time = #{sTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eTime != null" >
+        e_time = #{eTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jayantxie.model.DistractionTime" >
+    update distractiontime
+    set eva_id = #{evaId,jdbcType=INTEGER},
+      s_time = #{sTime,jdbcType=TIMESTAMP},
+      e_time = #{eTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

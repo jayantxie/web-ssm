@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jayantxie.dao.EvaluationDataDao" >
+  <resultMap id="BaseResultMap" type="com.jayantxie.model.EvaluationData" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="scores" property="scores" jdbcType="INTEGER" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="relax_minutes" property="relaxMinutes" jdbcType="INTEGER" />
+    <result column="distraction_times" property="distractionTimes" jdbcType="INTEGER" />
+    <result column="relax_times" property="relaxTimes" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jayantxie.model.EvaluationData" extends="BaseResultMap" >
+    <result column="text" property="text" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_name, scores, begin_time, end_time, relax_minutes, distraction_times, relax_times
+  </sql>
+  <sql id="Blob_Column_List" >
+    text
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from evaluationdata
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from evaluationdata
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <select id="selectTenByPrimaryKey" resultMap="BaseResultMap" >
+  select
+  <include refid="Base_Column_List"/>
+  from evaluationdata
+  where user_name = #{0,jdbcType=VARCHAR}
+  order by begin_time
+  desc limit #{1,jdbcType=INTEGER},10
+  </select>
+
+  <select id="selectLatestOne" resultType="Integer" parameterType="java.lang.String">
+    select
+    id
+    from evaluationdata
+    where user_name = #{userName,jdbcType=VARCHAR}
+    order by begin_time
+    desc limit 0,1
+  </select>
+
+  <insert id="insert" parameterType="com.jayantxie.model.EvaluationData" >
+    insert into evaluationdata (id, user_name, scores, 
+      begin_time, end_time, relax_minutes, 
+      distraction_times, relax_times, text
+      )
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{scores,jdbcType=INTEGER}, 
+      #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{relaxMinutes,jdbcType=INTEGER}, 
+      #{distractionTimes,jdbcType=INTEGER}, #{relaxTimes,jdbcType=INTEGER}, #{text,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jayantxie.model.EvaluationData" >
+    insert into evaluationdata
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="scores != null" >
+        scores,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="relaxMinutes != null" >
+        relax_minutes,
+      </if>
+      <if test="distractionTimes != null" >
+        distraction_times,
+      </if>
+      <if test="relaxTimes != null" >
+        relax_times,
+      </if>
+      <if test="text != null" >
+        text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="scores != null" >
+        #{scores,jdbcType=INTEGER},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="relaxMinutes != null" >
+        #{relaxMinutes,jdbcType=INTEGER},
+      </if>
+      <if test="distractionTimes != null" >
+        #{distractionTimes,jdbcType=INTEGER},
+      </if>
+      <if test="relaxTimes != null" >
+        #{relaxTimes,jdbcType=INTEGER},
+      </if>
+      <if test="text != null" >
+        #{text,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jayantxie.model.EvaluationData" >
+    update evaluationdata
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="scores != null" >
+        scores = #{scores,jdbcType=INTEGER},
+      </if>
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="relaxMinutes != null" >
+        relax_minutes = #{relaxMinutes,jdbcType=INTEGER},
+      </if>
+      <if test="distractionTimes != null" >
+        distraction_times = #{distractionTimes,jdbcType=INTEGER},
+      </if>
+      <if test="relaxTimes != null" >
+        relax_times = #{relaxTimes,jdbcType=INTEGER},
+      </if>
+      <if test="text != null" >
+        text = #{text,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jayantxie.model.EvaluationData" >
+    update evaluationdata
+    set user_name = #{userName,jdbcType=VARCHAR},
+      scores = #{scores,jdbcType=INTEGER},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      relax_minutes = #{relaxMinutes,jdbcType=INTEGER},
+      distraction_times = #{distractionTimes,jdbcType=INTEGER},
+      relax_times = #{relaxTimes,jdbcType=INTEGER},
+      text = #{text,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jayantxie.model.EvaluationData" >
+    update evaluationdata
+    set user_name = #{userName,jdbcType=VARCHAR},
+      scores = #{scores,jdbcType=INTEGER},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      relax_minutes = #{relaxMinutes,jdbcType=INTEGER},
+      distraction_times = #{distractionTimes,jdbcType=INTEGER},
+      relax_times = #{relaxTimes,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jayantxie.dao.LearningLogDao" >
+  <resultMap id="BaseResultMap" type="com.jayantxie.model.LearningLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="pic1" property="pic1" jdbcType="VARCHAR" />
+    <result column="pic2" property="pic2" jdbcType="VARCHAR" />
+    <result column="pic3" property="pic3" jdbcType="VARCHAR" />
+    <result column="pic4" property="pic4" jdbcType="VARCHAR" />
+    <result column="pic5" property="pic5" jdbcType="VARCHAR" />
+    <result column="pic6" property="pic6" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jayantxie.model.LearningLog" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_name, create_time, title, pic1, pic2, pic3, pic4, pic5, pic6
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from learninglog
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from learninglog
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jayantxie.model.LearningLog" >
+    insert into learninglog (id, user_name, create_time, 
+      title, pic1, pic2, 
+      pic3, pic4, pic5, pic6, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{title,jdbcType=VARCHAR}, #{pic1,jdbcType=VARCHAR}, #{pic2,jdbcType=VARCHAR}, 
+      #{pic3,jdbcType=VARCHAR}, #{pic4,jdbcType=VARCHAR}, #{pic5,jdbcType=VARCHAR}, #{pic6,jdbcType=VARCHAR}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jayantxie.model.LearningLog" >
+    insert into learninglog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="pic1 != null" >
+        pic1,
+      </if>
+      <if test="pic2 != null" >
+        pic2,
+      </if>
+      <if test="pic3 != null" >
+        pic3,
+      </if>
+      <if test="pic4 != null" >
+        pic4,
+      </if>
+      <if test="pic5 != null" >
+        pic5,
+      </if>
+      <if test="pic6 != null" >
+        pic6,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pic1 != null" >
+        #{pic1,jdbcType=VARCHAR},
+      </if>
+      <if test="pic2 != null" >
+        #{pic2,jdbcType=VARCHAR},
+      </if>
+      <if test="pic3 != null" >
+        #{pic3,jdbcType=VARCHAR},
+      </if>
+      <if test="pic4 != null" >
+        #{pic4,jdbcType=VARCHAR},
+      </if>
+      <if test="pic5 != null" >
+        #{pic5,jdbcType=VARCHAR},
+      </if>
+      <if test="pic6 != null" >
+        #{pic6,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jayantxie.model.LearningLog" >
+    update learninglog
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pic1 != null" >
+        pic1 = #{pic1,jdbcType=VARCHAR},
+      </if>
+      <if test="pic2 != null" >
+        pic2 = #{pic2,jdbcType=VARCHAR},
+      </if>
+      <if test="pic3 != null" >
+        pic3 = #{pic3,jdbcType=VARCHAR},
+      </if>
+      <if test="pic4 != null" >
+        pic4 = #{pic4,jdbcType=VARCHAR},
+      </if>
+      <if test="pic5 != null" >
+        pic5 = #{pic5,jdbcType=VARCHAR},
+      </if>
+      <if test="pic6 != null" >
+        pic6 = #{pic6,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jayantxie.model.LearningLog" >
+    update learninglog
+    set user_name = #{userName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      pic1 = #{pic1,jdbcType=VARCHAR},
+      pic2 = #{pic2,jdbcType=VARCHAR},
+      pic3 = #{pic3,jdbcType=VARCHAR},
+      pic4 = #{pic4,jdbcType=VARCHAR},
+      pic5 = #{pic5,jdbcType=VARCHAR},
+      pic6 = #{pic6,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jayantxie.model.LearningLog" >
+    update learninglog
+    set user_name = #{userName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      pic1 = #{pic1,jdbcType=VARCHAR},
+      pic2 = #{pic2,jdbcType=VARCHAR},
+      pic3 = #{pic3,jdbcType=VARCHAR},
+      pic4 = #{pic4,jdbcType=VARCHAR},
+      pic5 = #{pic5,jdbcType=VARCHAR},
+      pic6 = #{pic6,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
